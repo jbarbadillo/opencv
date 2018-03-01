@@ -246,7 +246,7 @@ make & enjoy!
 
 // default and maximum number of V4L buffers, not including last, 'special' buffer
 #define MAX_V4L_BUFFERS 10
-#define DEFAULT_V4L_BUFFERS 4
+#define DEFAULT_V4L_BUFFERS 1
 
 // if enabled, then bad JPEG warnings become errors and cause NULL returned instead of image
 #define V4L_ABORT_BADJPEG
@@ -478,6 +478,13 @@ static int autosetup_capture_mode_v4l2(CvCaptureCAM_V4L* capture) {
     for (size_t i = 0; i < sizeof(try_order) / sizeof(__u32); i++) {
         capture->palette = try_order[i];
         if (try_palette_v4l2(capture)) {
+            v4l2_capability capability; 
+            ioctl (capture->deviceHandle, VIDIOC_QUERYCAP, &capability);
+            std::string deviceName((char*)capability.card);
+            if (deviceName == "das-Cam") {
+              capture->convert_rgb = false;
+              capture->palette = V4L2_PIX_FMT_SBGGR10;
+            }
             return 0;
         }
     }
@@ -597,6 +604,10 @@ static void v4l2_create_frame(CvCaptureCAM_V4L *capture) {
             if(!capture->convert_rgb){
                 depth = IPL_DEPTH_16U;
             }
+            break;
+        case V4L2_PIX_FMT_SBGGR10:
+            depth = IPL_DEPTH_16U;
+            channels = 1;
             break;
         }
     }
@@ -1581,6 +1592,11 @@ static IplImage* icvRetrieveFrameCAM_V4L( CvCaptureCAM_V4L* capture, int) {
                    (char *)capture->buffers[capture->bufferIndex].start,
                    capture->frame.imageSize);
         }
+        break;
+    case V4L2_PIX_FMT_SBGGR10:
+        memcpy((char *))capture->frame.imageData,
+               (char *)capture->buffers[capture->bufferIndex].start,
+               capture->frame.imageSize);
         break;
     }
 

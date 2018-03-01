@@ -1,5 +1,8 @@
 ## OpenCV: Open Source Computer Vision Library
 
+This branch is created only to resolve an specific problem with `cypress`
+cameras related to capture palette `V4L2_PIX_FMT_SBGGR10`.
+
 ### Resources
 
 * Homepage: <http://opencv.org>
