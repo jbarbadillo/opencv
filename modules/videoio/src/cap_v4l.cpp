@@ -1594,7 +1594,7 @@ static IplImage* icvRetrieveFrameCAM_V4L( CvCaptureCAM_V4L* capture, int) {
         }
         break;
     case V4L2_PIX_FMT_SBGGR10:
-        memcpy((char *))capture->frame.imageData,
+        memcpy((char *)capture->frame.imageData,
                (char *)capture->buffers[capture->bufferIndex].start,
                capture->frame.imageSize);
         break;
