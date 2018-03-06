@@ -1,7 +1,10 @@
 ## OpenCV: Open Source Computer Vision Library
 
-This branch is created only to resolve an specific problem with `cypress`
-cameras related to capture palette `V4L2_PIX_FMT_SBGGR10`.
+This branch is created to:
+
+* Resolve an specific problem with `cypress` cameras related to capture palette `V4L2_PIX_FMT_SBGGR10`.
+* Set `DEFAULT_V4L_BUFFERS` to 1.
+* Set read timeout to 1 second.
 
 ### Resources
 
